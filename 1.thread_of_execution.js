@@ -1,11 +1,18 @@
-function handleNewPost(post) {
+import { Collection } from "mongodb";
+import { connectToCluster } from "./mongo.js";
+
+async function handleNewPost(post) {
     // Perform some processing on the post (e.g., sanitization, validation)
-    savePostToDatabase(post);
+    await savePostToDatabase(post);
     displayNewPost(post);
 }
 
-function savePostToDatabase(post) {
+async function savePostToDatabase(post) {
     // Save the post data to the database
+    let mongoClient = await connectToCluster();
+    const db = mongoClient.db("social");
+    const collection = db.collection("posts");
+    await collection.insertOne(post);
     console.log("Save post to database");
 }
 
@@ -20,4 +27,4 @@ const newPost = {
     timestamp: Date.now()
 };
 
-handleNewPost(newPost); 
+await handleNewPost(newPost); 
