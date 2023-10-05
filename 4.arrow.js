@@ -13,4 +13,5 @@ const handleClick =     ()=> {
     submitComment(commentText);
 }
 
+
 submitButton.addEventListener("click", handleClick);
